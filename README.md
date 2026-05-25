@@ -46,9 +46,3 @@ Esto levantará los siguientes servicios automáticamente de forma local:
 └── backend/               # Servidor de Datos Inteligente (FastAPI)
     └── app/               # Divisiones en Clean Architecture
 ```
-
-## 📋 Por Hacer (Siguientes pasos para el equipo)
-
-- **Adaptación a Resoluciones Múltiples (Responsive Design)**: Escalar y adaptar la vista centrada actual del PMN (modo móvil) para que aproveche todo el espacio web si se abre en pantallas de escritorio o tabletas (Dashboards administrativos).
-- **Identidad Visual Real**: Incluir tipografías, banners y logotipos formales de la institución (UCT) y ajustar los colores de Tailwind según requerimientos del equipo.
-- **Interacción Real con el Backend**: Cuando finalice formalmente la etapa de "Prototipo Simulado" (PMN), comenzar a conectar los estados de React mediante `fetch/axios` hacia enrutadores REST reales en la API de FastAPI.
