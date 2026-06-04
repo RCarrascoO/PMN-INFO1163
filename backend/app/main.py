@@ -1,25 +1,45 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.db.database import init_db
+from app.api import auth, packages
 
-app = FastAPI(title="PMN API", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
 
-# Configurar orígenes permitidos
-origins = [
-    "http://localhost:3000",
-]
+app = FastAPI(
+    title="PMN UCT API",
+    description="Sistema de Paquetería Interna - Universidad Católica de Temuco",
+    version="2.0.0",
+    lifespan=lifespan,
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[
+        "http://localhost:3000", "http://127.0.0.1:3000",
+        "http://localhost:3001", "http://127.0.0.1:3001",
+        "http://localhost:3002", "http://127.0.0.1:3002",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
+app.include_router(packages.router)
+
 @app.get("/")
 def read_root():
-    return {"message": "Bienvenido a la API del proyecto PMN con Arquitectura Limpia."}
-
-# Aquí incluiremos nuestros enrutadores, por ejemplo:
-# from app.api.v1.endpoints import user
-# app.include_router(user.router, prefix="/api/v1/users", tags=["users"])
+    return {
+        "sistema": "Paquetería Interna UCT",
+        "version": "2.0.0",
+        "estado": "operativo",
+        "endpoints": {
+            "auth": "/api/auth/login",
+            "paquetes": "/api/packages",
+            "docs": "/docs",
+        }
+    }
